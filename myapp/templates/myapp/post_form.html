@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+
+<h2>登録ページ</h2>
+
+<form action='' method='post'>
+  {% csrf_token %}
+  {{ form.title }}
+  <br>
+  {{ form.content }}
+  <br>
+  <button type='submit'>保存</button>
+</form>
+
+{% endblock %}
