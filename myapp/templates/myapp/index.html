@@ -23,6 +23,7 @@ base.htmlを継承
               <p class="card-text">
               {{ item.content| truncatechars:100 }}
             </p>
+            <a href="{% url 'myapp:post_detail' item.id %}" class="btn btn-info">もっと読む</a>
             </div>
           </div>
         </div>
