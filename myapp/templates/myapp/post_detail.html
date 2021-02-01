@@ -1,0 +1,24 @@
+<!--
+base.htmlを継承
+-->
+{% extends 'myapp/base.html' %}
+{% block content %}
+
+<div class="row mt-5">
+  <div class="col-md-9">
+    <div class="card">
+      <img
+        src="https://mdbootstrap.com/img/new/standard/nature/182.jpg"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h4 class="card-title">{{ object.title }}</h4>
+        <p class="card-text">{{ object.content }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
