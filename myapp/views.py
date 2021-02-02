@@ -1,6 +1,6 @@
 from django.shortcuts import render,resolve_url
 from django.http import HttpResponse
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
 from .models import Post
 from django.urls import reverse_lazy
 from .forms import PostForm
@@ -45,3 +45,9 @@ class PostDelete(DeleteView):
   def get_success_url(self):
     messages.info(self.request, '投稿を削除しました。')
     return resolve_url('myapp:index')
+
+class PostList(ListView):
+  model = Post
+  # 投稿日時で並び変えて取得
+  def get_queryset(self):
+    return Post.objects.all().order_by('-created_at')
