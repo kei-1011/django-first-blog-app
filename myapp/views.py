@@ -1,11 +1,11 @@
 from django.shortcuts import render,resolve_url
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
 from .models import Post
 from django.urls import reverse_lazy
-from .forms import PostForm, LoginForm
+from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 # 記事一覧を表示
@@ -57,3 +57,16 @@ class PostList(ListView):
 class Login(LoginView):
   form_class = LoginForm
   template_name = 'myapp/login.html'
+
+class Logout(LogoutView):
+  template_name = 'myapp/logout.html'
+
+class SignUp(CreateView):
+  form_class = SignUpForm
+  template_name = 'myapp/signup.html'
+  success_url = reverse_lazy('myapp:index')
+
+  # フォームの内容が有効だった場合の処理
+  def form_valid(self, form):
+    messages.info(self.request, 'ユーザー登録が完了しました。')
+    return HttpResponseRedirect(self.get_success_url())
