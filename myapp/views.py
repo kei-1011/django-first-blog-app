@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import login
 
 
 # 記事一覧を表示
@@ -68,5 +69,12 @@ class SignUp(CreateView):
 
   # フォームの内容が有効だった場合の処理
   def form_valid(self, form):
+
+    # フォームの内容をuser変数に格納
+    user = form.save()
+    # userを引数として、ログイン処理を実行
+    login(self.request, user)
+    self.object = user
+
     messages.info(self.request, 'ユーザー登録が完了しました。')
     return HttpResponseRedirect(self.get_success_url())
