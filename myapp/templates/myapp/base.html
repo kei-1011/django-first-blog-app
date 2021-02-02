@@ -41,19 +41,28 @@
             <li class="nav-item">
               <a class="nav-link" href="/admin" target="_blank">管理画面へ</a>
             </li>
+
             <!-- Navbar dropdown -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
-                aria-expanded="false">
-                記事
-              </a>
+              <a class="nav-link dropdown-toggle" href="#" id="account" role="button" data-mdb-toggle="dropdown" aria-expanded="false">アカウント</a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu" aria-labelledby="account">
+                {% if request.user.is_authenticated %}
+                  <li><a class="dropdown-item" href="">{{ request.user }}</a></li>
+                  <li><a class="dropdown-item" href="">ログアウト</a></li>
+                {% else %}
+                  <li><a class="dropdown-item" href="{% url 'myapp:login' %}">ログイン</a></li>
+                  <li><a class="dropdown-item" href="">ユーザー登録</a></li>
+                {% endif %}
+              </ul>
+            </li>
+            <!-- Navbar dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">記事</a>
               <!-- Dropdown menu -->
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'myapp:post_create' %}">新規作成</a></li>
                 <li><a class="dropdown-item" href="{% url 'myapp:post_list' %}">投稿一覧</a></li>
-                <li>
-                  <hr class="dropdown-divider" />
-                </li>
               </ul>
             </li>
           </ul>
