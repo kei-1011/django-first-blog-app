@@ -119,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# ログイン機能の追加
+LOGIN_URL = 'myapp:login'
+LOGIN_REDIRECT_URL = 'myapp:index'
