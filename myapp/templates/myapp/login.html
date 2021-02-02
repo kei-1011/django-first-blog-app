@@ -1,0 +1,24 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class='row'>
+  <div class='col-md-6'>
+    <h2 class='p-3'>Login</h2>
+    <form action='' method='post'>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+
+      <div class="form-group mb-3">
+        <label for="title">{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+      </div>
+      {% endfor %}
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">ログイン</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
