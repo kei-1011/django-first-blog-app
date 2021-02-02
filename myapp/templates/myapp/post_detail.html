@@ -15,6 +15,7 @@ base.htmlを継承
       <div class="card-body">
         <h4 class="card-title">{{ object.title }}</h4>
         <p class="card-text">{{ object.content }}</p>
+        <a href="{% url 'myapp:post_update' object.id %}" class="btn btn-primary">更新</a>
       </div>
     </div>
 
