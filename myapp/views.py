@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.contrib.auth.decorators import login_required
 
 class OnlyMyPostMixin(UserPassesTestMixin):
   raise_exception = True
@@ -98,8 +98,17 @@ class SignUp(CreateView):
     messages.info(self.request, 'ユーザー登録が完了しました。')
     return HttpResponseRedirect(self.get_success_url())
 
+# ログイン状態でないと動作しない
+# defの場合は　login_required を使う
+@login_required
 def Like_add(request, post_id):
   post = Post.objects.get(id=post_id)
+  #　ログイン中のユーザーで、現在開いている投稿にLikeされているかを確認する
+  is_like = Like.objects.filter(user = request.user).filter(post = post_id).count()
+  if is_like > 0:
+    messages.info(request, 'すでにお気に入りに追加済みです。')
+    return redirect('myapp:post_detail', post.id)
+
   like = Like()
   like.user = request.user
   like.post = post
