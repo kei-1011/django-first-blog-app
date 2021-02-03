@@ -4,7 +4,7 @@
   <div class='col-md-9'>
     <h2 class='p-3'>カテゴリ一覧</h2>
       {% for item in category_list %}
-        <p><a href="#">{{ item.name }}</a></p>
+        <p><a href="{% url 'myapp:category_detail' item.name_en %}">{{ item.name }}</a></p>
       {% endfor %}
   </div>
 </div>

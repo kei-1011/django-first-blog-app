@@ -133,3 +133,23 @@ def Like_add(request, post_id):
 
 class CategoryList(ListView):
   model = Category
+
+
+class CategoryDetail(DetailView):
+  model = Category
+  slug_field = 'name_en'
+  slug_url_kwarg = 'name_en'
+
+  def get_context_data(self, *args, **kwargs):
+    # contextとして取得（テンプレ）
+    context = super().get_context_data(**kwargs)
+
+    # Postの内容を取得　Post.objects.all()で全て取得
+    detail_data = Category.objects.get(name_en=self.kwargs['name_en'])
+    category_posts = Post.objects.filter(category = detail_data.id).order_by('-created_at')
+
+    params = {
+      'object': detail_data,
+      'category_posts':category_posts,
+    }
+    return params
