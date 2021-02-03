@@ -20,3 +20,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
 ]
+
+# settingsをインポート　staticな設定を読み込む
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

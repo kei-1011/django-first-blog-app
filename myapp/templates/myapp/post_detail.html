@@ -7,11 +7,11 @@ base.htmlを継承
 <div class="row mt-5">
   <div class="col-md-9">
     <div class="card">
-      <img
-        src="https://mdbootstrap.com/img/new/standard/nature/182.jpg"
-        class="card-img-top"
-        alt="..."
-      />
+      {% if object.thumbnail %}
+        <img src="{{ object.thumbnail.url }}" class="card-img-top" alt="{{ object.title }}" />
+      {% else %}
+      <img src="https://mdbootstrap.com/img/new/standard/nature/182.jpg" class="card-img-top" alt="{{ object.title }}" />
+      {% endif %}
       <div class="card-body">
         <h4 class="card-title">{{ object.title }}</h4>
         <p class="card-text">{{ object.content }}</p>
