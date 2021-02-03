@@ -7,7 +7,16 @@ from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
+class OnlyMyPostMixin(UserPassesTestMixin):
+  raise_exception = True
+  def test_func(self):
+    # 記事オブジェクトをpostに格納
+    post = Post.objects.get(id=self.kwargs['pk'])
+    # 記事のauthorがログインしているユーザーかどうかを判断
+    return post.author == self.request.user
 
 
 # 記事一覧を表示
@@ -46,14 +55,14 @@ class PostCreate(LoginRequiredMixin,CreateView):
 class PostDetail(DetailView):
   model = Post
 
-class PostUpdate(LoginRequiredMixin,UpdateView):
+class PostUpdate(OnlyMyPostMixin,UpdateView):
   model = Post
   form_class = PostForm
   def get_success_url(self):
     messages.info(self.request, '更新しました')
     return resolve_url('myapp:post_detail', pk=self.kwargs['pk'])
 
-class PostDelete(LoginRequiredMixin,DeleteView):
+class PostDelete(OnlyMyPostMixin,DeleteView):
   model = Post
   def get_success_url(self):
     messages.info(self.request, '投稿を削除しました。')
