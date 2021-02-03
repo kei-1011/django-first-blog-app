@@ -20,6 +20,7 @@ base.htmlを継承
             <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title">{{ item.title }}</h5><small> {{ item.author }}</small>
+              <span class="category">{{ item.category }}</span>
               <p class="card-text">
               {{ item.content| truncatechars:100 }}
             </p>
