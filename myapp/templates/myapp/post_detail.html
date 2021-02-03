@@ -22,6 +22,21 @@ base.htmlを継承
 
       </div>
     </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ object.category }}</h5>
+        <p class="card-text">このカテゴリの他の記事</p>
+      </div>
+      <ul class="list-group">
+        {% for item in category_posts %}
+          <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
   </div>
 </div>
