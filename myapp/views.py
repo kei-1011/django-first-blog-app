@@ -1,7 +1,7 @@
 from django.shortcuts import render,resolve_url, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
-from .models import Post, Like
+from .models import Post, Like, Category
 from django.urls import reverse_lazy
 from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
@@ -54,6 +54,19 @@ class PostCreate(LoginRequiredMixin,CreateView):
 
 class PostDetail(DetailView):
   model = Post
+  # DetailViewから渡されたデータはobjectという名称になる
+
+  def get_context_data(self, **kwargs):
+    # 表示している記事の詳細データを取得
+    detail_data = Post.objects.get(id=self.kwargs['pk'])
+
+    # 同じカテゴリーに属する記事を取得 [:5]で先頭から５件
+    category_posts = Post.objects.filter(category = detail_data.category).order_by('-created_at')[:5]
+    params = {
+      'object': detail_data,
+      'category_posts':category_posts,
+    }
+    return params
 
 class PostUpdate(OnlyMyPostMixin,UpdateView):
   model = Post
@@ -116,3 +129,27 @@ def Like_add(request, post_id):
 
   messages.success(request, 'お気に入りに追加しました。')
   return redirect('myapp:post_detail', post.id)
+
+
+class CategoryList(ListView):
+  model = Category
+
+
+class CategoryDetail(DetailView):
+  model = Category
+  slug_field = 'name_en'
+  slug_url_kwarg = 'name_en'
+
+  def get_context_data(self, *args, **kwargs):
+    # contextとして取得（テンプレ）
+    context = super().get_context_data(**kwargs)
+
+    # Postの内容を取得　Post.objects.all()で全て取得
+    detail_data = Category.objects.get(name_en=self.kwargs['name_en'])
+    category_posts = Post.objects.filter(category = detail_data.id).order_by('-created_at')
+
+    params = {
+      'object': detail_data,
+      'category_posts':category_posts,
+    }
+    return params
