@@ -1,5 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+
+class Category(models.Model):
+  name = models.CharField("カテゴリ名", max_length=50)
+  name_en = models.CharField("カテゴリ名英語", max_length=10)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+  def __str__(self):
+  # Postを参照するとき、タイトルを指定して参照できる
+    return self.name
+
 # Post
 class Post(models.Model):
   # user ForeignKey→外部キー
@@ -10,6 +21,9 @@ class Post(models.Model):
 
   # コンテンツ
   content = models.TextField('内容', max_length=1000)
+
+  # カテゴリ
+  category = models.ForeignKey('Category', on_delete=models.PROTECT)
 
   # 現在の日時を保存
   created_at = models.DateTimeField(auto_now_add=True)
