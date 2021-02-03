@@ -7,6 +7,16 @@ from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
+class OnlyMyPostMixin(UserPassesTestMixin):
+  raise_exception = True
+  def test_func(self):
+    # 記事オブジェクトをpostに格納
+    post = Post.objects.get(id=self.kwargs['pk'])
+    # 記事のauthorがログインしているユーザーかどうかを判断
+    return post.author == self.request.user
 
 
 # 記事一覧を表示
@@ -27,23 +37,32 @@ class Index(TemplateView):
     return context
 
 # 記事作成
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin,CreateView):
   model = Post
   form_class = PostForm
   # Postが成功した場合、indexへ遷移する
   success_url = reverse_lazy('myapp:index')
 
+  def form_valid(self, form):
+    # author_id に pkを格納
+    form.instance.author_id = self.request.user.id
+    return super(PostCreate, self).form_valid(form)  # PostCreateを更新
+
+  def get_success_url(self):
+    messages.info(self.request, '投稿しました。')
+    return resolve_url('myapp:index')
+
 class PostDetail(DetailView):
   model = Post
 
-class PostUpdate(UpdateView):
+class PostUpdate(OnlyMyPostMixin,UpdateView):
   model = Post
   form_class = PostForm
   def get_success_url(self):
     messages.info(self.request, '更新しました')
     return resolve_url('myapp:post_detail', pk=self.kwargs['pk'])
 
-class PostDelete(DeleteView):
+class PostDelete(OnlyMyPostMixin,DeleteView):
   model = Post
   def get_success_url(self):
     messages.info(self.request, '投稿を削除しました。')
