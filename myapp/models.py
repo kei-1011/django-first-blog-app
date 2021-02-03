@@ -25,6 +25,9 @@ class Post(models.Model):
   # カテゴリ
   category = models.ForeignKey('Category', on_delete=models.PROTECT)
 
+  # 画像
+  thumbnail = models.ImageField(upload_to='images/',blank=True)
+
   # 現在の日時を保存
   created_at = models.DateTimeField(auto_now_add=True)
 
