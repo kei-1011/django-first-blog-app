@@ -1,7 +1,10 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Post
 class Post(models.Model):
+  # user ForeignKey→外部キー
+  author = models.ForeignKey(User, on_delete=models.PROTECT, blank=False)
+
   # タイトルを指定、最大文字数を５０文字
   title = models.CharField('タイトル', max_length=50)
 

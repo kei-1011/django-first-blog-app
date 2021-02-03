@@ -34,6 +34,15 @@ class PostCreate(LoginRequiredMixin,CreateView):
   # Postが成功した場合、indexへ遷移する
   success_url = reverse_lazy('myapp:index')
 
+  def form_valid(self, form):
+    # author_id に pkを格納
+    form.instance.author_id = self.request.user.id
+    return super(PostCreate, self).form_valid(form)  # PostCreateを更新
+
+  def get_success_url(self):
+    messages.info(self.request, '投稿しました。')
+    return resolve_url('myapp:index')
+
 class PostDetail(DetailView):
   model = Post
 
