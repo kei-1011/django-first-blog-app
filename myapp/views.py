@@ -7,6 +7,7 @@ from .forms import PostForm, LoginForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # 記事一覧を表示
@@ -27,7 +28,7 @@ class Index(TemplateView):
     return context
 
 # 記事作成
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin,CreateView):
   model = Post
   form_class = PostForm
   # Postが成功した場合、indexへ遷移する
@@ -36,14 +37,14 @@ class PostCreate(CreateView):
 class PostDetail(DetailView):
   model = Post
 
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin,UpdateView):
   model = Post
   form_class = PostForm
   def get_success_url(self):
     messages.info(self.request, '更新しました')
     return resolve_url('myapp:post_detail', pk=self.kwargs['pk'])
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin,DeleteView):
   model = Post
   def get_success_url(self):
     messages.info(self.request, '投稿を削除しました。')
