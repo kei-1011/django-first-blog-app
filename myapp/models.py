@@ -20,3 +20,7 @@ class Post(models.Model):
   def __str__(self):
   # Postを参照するとき、タイトルを指定して参照できる
     return self.title
+
+class Like(models.Model):
+  post = models.ForeignKey(Post, verbose_name="投稿", on_delete=models.PROTECT)
+  user = models.ForeignKey(User, verbose_name="Likeしたユーザー", on_delete=models.PROTECT)
