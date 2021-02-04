@@ -17,6 +17,7 @@ base.htmlを継承
         <p class="card-text">{{ object.content | safe | linebreaksbr | urlize }}</p>
         <p><a href="{% url 'myapp:like_add' object.id %}" class="btn btn-success">ブックマーク</a></p>
         <hr>
+        <a href="javascript:void(0);" onClick="window.history.back();" class="btn btn-outline-dark">戻る</a>
         <a href="{% url 'myapp:post_update' object.id %}" class="btn btn-primary">更新</a>
         <a href="{% url 'myapp:post_delete' object.id %}" class="btn btn-outline-danger">削除</a>
 
