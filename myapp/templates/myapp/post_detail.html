@@ -14,7 +14,7 @@ base.htmlを継承
       {% endif %}
       <div class="card-body">
         <h4 class="card-title">{{ object.title }}</h4>
-        <p class="card-text">{{ object.content }}</p>
+        <p class="card-text">{{ object.content | safe | linebreaksbr | urlize }}</p>
         <p><a href="{% url 'myapp:like_add' object.id %}" class="btn btn-success">ブックマーク</a></p>
         <hr>
         <a href="{% url 'myapp:post_update' object.id %}" class="btn btn-primary">更新</a>
