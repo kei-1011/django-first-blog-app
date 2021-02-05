@@ -65,6 +65,18 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'myapp:post_create' %}">新規作成</a></li>
                 <li><a class="dropdown-item" href="{% url 'myapp:post_list' %}">投稿一覧</a></li>
+              </ul>
+            </li>
+
+            <!-- Navbar dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">Category</a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for item in category_list %}
+                  <li><a class="dropdown-item" href="{% url 'myapp:category_detail' item.name_en %}">{{ item.name }}</a></li>
+                {% endfor%}
+                <hr>
                 <li><a class="dropdown-item" href="{% url 'myapp:category_list' %}">カテゴリ一覧</a></li>
               </ul>
             </li>
