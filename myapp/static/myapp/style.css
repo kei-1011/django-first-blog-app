@@ -4,20 +4,20 @@
   border-bottom-left-radius: .25rem !important;
 }
 
-.card {
+.post_list .card {
   text-decoration: none;
   color: #333;
   transition: all 0.4s;
   position: relative;
 }
 
-.card:hover {
+.post_list .card:hover {
   color: #333;
   opacity:.8;
   transform: translateY(-5px);
 }
 
-.card .post_created_at {
+.post_list .card .post_created_at {
   font-size: 8px;
   color:#ccc;
   position: absolute;
