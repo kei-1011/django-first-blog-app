@@ -15,16 +15,18 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
   <!-- MDB -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.2.0/mdb.min.css" rel="stylesheet" />
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'myapp/style.css' %}">
 </head>
 <body>
   <!-- Start your project here-->
   <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
       <!-- Container wrapper -->
       <div class="container">
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="/">My blog</a>
+        <a class="navbar-brand" href="/">{{ request.site.siteconfig.meta_title }}</a>
 
         <!-- Toggle button -->
         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
@@ -37,27 +39,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left links -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'myapp:index' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin" target="_blank">管理画面へ</a>
-            </li>
+            {% if request.user.id  == 1 %}
+              <li class="nav-item">
+                <a class="nav-link" href="/admin" target="_blank">管理画面へ</a>
+              </li>
+              {% endif %}
 
-            <!-- Navbar dropdown -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="account" role="button" data-mdb-toggle="dropdown" aria-expanded="false">アカウント</a>
-              <!-- Dropdown menu -->
-              <ul class="dropdown-menu" aria-labelledby="account">
-                {% if request.user.is_authenticated %}
-                  <li><a class="dropdown-item" href="">{{ request.user }}</a></li>
-                  <li><a class="dropdown-item" href="{% url 'myapp:logout' %}">ログアウト</a></li>
-                {% else %}
-                  <li><a class="dropdown-item" href="{% url 'myapp:login' %}">ログイン</a></li>
-                  <li><a class="dropdown-item" href="{% url 'myapp:signup' %}">ユーザー登録</a></li>
-                {% endif %}
-              </ul>
-            </li>
             <!-- Navbar dropdown -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">記事</a>
@@ -80,13 +67,27 @@
                 <li><a class="dropdown-item" href="{% url 'myapp:category_list' %}">カテゴリ一覧</a></li>
               </ul>
             </li>
+            <!-- Navbar dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="account" role="button" data-mdb-toggle="dropdown" aria-expanded="false">アカウント</a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu" aria-labelledby="account">
+                {% if request.user.is_authenticated %}
+                  <li><a class="dropdown-item" href="">{{ request.user }}</a></li>
+                  <li><a class="dropdown-item" href="{% url 'myapp:logout' %}">ログアウト</a></li>
+                {% else %}
+                  <li><a class="dropdown-item" href="{% url 'myapp:login' %}">ログイン</a></li>
+                  <li><a class="dropdown-item" href="{% url 'myapp:signup' %}">ユーザー登録</a></li>
+                {% endif %}
+              </ul>
+            </li>
           </ul>
           <!-- Left links -->
 
           <!-- Search form -->
           <form action="{% url 'myapp:search' %}" class="d-flex input-group w-auto" method="POST">
           {% csrf_token %}
-            <input type="search" name="freeword" class="form-control" placeholder="Search" aria-label="Search" />
+            <input type="search" name="freeword" class="form-control search-form" placeholder="Search" aria-label="Search" />
           </form>
         </div>
         <!-- Collapsible wrapper -->
@@ -118,61 +119,43 @@
 
 
   <!-- Footer -->
-  <footer class="text-light bg-primary text-center text-lg-start">
+  <footer class="text-light bg-black text-center text-lg-start">
     <!-- Grid container -->
     <div class="container p-4">
       <!--Grid row-->
       <div class="row">
         <!--Grid column-->
-        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-          <h5 class="text-uppercase">Footer Content</h5>
-
-          <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-          molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-          voluptatem veniam, est atque cumque eum delectus sint!
-        </p>
+        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase">{{ request.site.siteconfig.meta_title }}</h5>
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 class="text-uppercase">Links</h5>
 
           <ul class="list-unstyled mb-0">
-            <li>
-              <a href="#!" class="text-light">Link 1</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 2</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 3</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 4</a>
-            </li>
+            {% if request.user.is_authenticated %}
+              <li><a class="text-light" href="{% url 'myapp:logout' %}">ログアウト</a></li>
+            {% else %}
+              <li><a class="text-light" href="{% url 'myapp:login' %}">ログイン</a></li>
+              <li><a class="text-light" href="{% url 'myapp:signup' %}">ユーザー登録</a></li>
+            {% endif %}
+            <li><a class="text-light" href="{% url 'myapp:post_create' %}">新規作成</a></li>
+            <li><a class="text-light" href="{% url 'myapp:post_list' %}">投稿一覧</a></li>
+
           </ul>
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-          <h5 class="text-uppercase mb-0">Links</h5>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-0"><a class="text-light" href="{% url 'myapp:category_list' %}">カテゴリ一覧</a></h5>
 
           <ul class="list-unstyled">
-            <li>
-              <a href="#!" class="text-light">Link 1</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 2</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 3</a>
-            </li>
-            <li>
-              <a href="#!" class="text-light">Link 4</a>
-            </li>
+            {% for item in category_list %}
+              <li><a class="text-light" href="{% url 'myapp:category_detail' item.name_en %}">{{ item.name }}</a></li>
+            {% endfor%}
           </ul>
         </div>
         <!--Grid column-->

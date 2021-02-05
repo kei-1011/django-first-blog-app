@@ -1,15 +1,35 @@
+
+<!--
+base.htmlを継承
+-->
 {% extends 'myapp/base.html' %}
 {% block content %}
-<div class='row'>
-  <div class='col-md-9'>
-    <h2 class='p-3'>{{ object.name }}</h2>
-    <hr>
-    <ul class="list-group">
-      {% for item in category_posts %}
-        <li class="list-group-item"><a href="{% url 'myapp:post_detail' item.id %}">{{ item.title }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
 
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-fluid mt-5 mb-5">
+        <h2>{{ object.name }}</h2>
+        <hr>
+      </div>
+    </div>
+    <!-- Jumbotron -->
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for item in category_posts %}
+        <div class="col">
+          <a class="card h-100" href='{% url 'myapp:post_detail' item.id %}'>
+            {% if item.thumbnail %}
+              <img src="{{ item.thumbnail.url }}" class="card-img-top" alt="{{ item.title }}" />
+            {% else %}
+              <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="card-img-top" alt="..." />
+            {% endif %}
+            <div class="card-body mb-3">
+              <h5 class="card-title">{{ item.title }}</h5>
+              <span class="category">{{ item.category }}</span>
+              {% comment %} <p class="card-text">{{ item.content | truncatechars_html:50 | safe }}</p> {% endcomment %}
+              <small class='post_created_at'>{{ item.created_at }}</small>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
 {% endblock %}

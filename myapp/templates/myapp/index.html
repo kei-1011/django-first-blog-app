@@ -5,32 +5,28 @@ base.htmlを継承
 {% block content %}
 
     <!-- Jumbotron -->
-    <div class="p-5 jumbotron jumbotron-fluid">
-      <div class="container">
-        <h2 class="display-4">{{ request.site.siteconfig.top_title }}</h2>
-        <p class="lead">{{ request.site.siteconfig.top_subtitle }}</p>
-      </div>
+    <div class="jumbotron jumbotron-fluid mt-5 mb-5">
+      <h2 class="display-4">{{ request.site.siteconfig.top_title }}</h2>
+      <p class="lead">{{ request.site.siteconfig.top_subtitle }}</p>
     </div>
     <!-- Jumbotron -->
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for item in post_list %}
         <div class="col">
-          <div class="card h-100">
-          {% if item.thumbnail %}
-            <img src="{{ item.thumbnail.url }}" class="card-img-top" alt="{{ item.title }}" />
-          {% else %}
-            <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="card-img-top" alt="..." />
-          {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ item.title }}</h5><small> {{ item.author }}</small>
+          <a class="card h-100" href='{% url 'myapp:post_detail' item.id %}'>
+            {% if item.thumbnail %}
+              <img src="{{ item.thumbnail.url }}" class="card-img-top" alt="{{ item.title }}" />
+            {% else %}
+              <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="card-img-top" alt="..." />
+            {% endif %}
+            <div class="card-body mb-3">
+              <h5 class="card-title">{{ item.title }}</h5>
               <span class="category">{{ item.category }}</span>
-              <p class="card-text">
-              {{ item.content | truncatechars_html:50 | safe }}
-            </p>
-            <a href="{% url 'myapp:post_detail' item.id %}" class="btn btn-info">もっと読む</a>
+              {% comment %} <p class="card-text">{{ item.content | truncatechars_html:50 | safe }}</p> {% endcomment %}
+              <small class='post_created_at'>{{ item.created_at }}</small>
             </div>
-          </div>
+          </a>
         </div>
       {% endfor %}
     </div>
