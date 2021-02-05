@@ -123,9 +123,11 @@ class SignUp(CreateView):
 def Like_add(request, post_id):
   post = Post.objects.get(id=post_id)
   #　ログイン中のユーザーで、現在開いている投稿にLikeされているかを確認する
-  is_like = Like.objects.filter(user = request.user).filter(post = post_id).count()
-  if is_like > 0:
-    messages.info(request, 'すでにお気に入りに追加済みです。')
+  is_like = Like.objects.filter(user=request.user).filter(post=post_id)
+
+  if is_like.count() > 0:
+    is_like.delete()
+    messages.info(request, 'お気に入りから削除しました。')
     return redirect('myapp:post_detail', post.id)
 
   like = Like()

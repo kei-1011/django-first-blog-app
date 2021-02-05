@@ -11,7 +11,7 @@ base.htmlを継承
     </div>
     <!-- Jumbotron -->
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 post_list">
       {% for item in post_list %}
         <div class="col">
           <a class="card h-100" href='{% url 'myapp:post_detail' item.id %}'>
