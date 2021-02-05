@@ -51,7 +51,9 @@
               <!-- Dropdown menu -->
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'myapp:post_create' %}">新規作成</a></li>
-                <li><a class="dropdown-item" href="{% url 'myapp:post_list' %}">投稿一覧</a></li>
+                {% if request.user.is_authenticated %}
+                  <li><a class="dropdown-item" href="{% url 'myapp:post_list' %}">投稿一覧</a></li>
+                {% endif %}
               </ul>
             </li>
 

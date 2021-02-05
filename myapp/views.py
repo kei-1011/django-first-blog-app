@@ -90,7 +90,8 @@ class PostList(ListView):
 
   # 投稿日時で並び変えて取得
   def get_queryset(self):
-    return Post.objects.all().order_by('-created_at')
+    return Post.objects.filter(author = self.request.user).order_by('-created_at')
+
 
 class Login(LoginView):
   form_class = LoginForm
