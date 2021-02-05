@@ -3,10 +3,27 @@
 <div class='row'>
   <div class='col-md-9'>
     <h2 class='p-3'>カテゴリ一覧</h2>
-      {% for item in category_list %}
-        <p><a href="{% url 'myapp:category_detail' item.name_en %}">{{ item.name }}</a></p>
-      {% endfor %}
   </div>
+  <div class='row mt-2'>
+    {% for category in category_list %}
+      <div class='col-md-4'>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ category.name }}</h4>
+            <hr>
+            <!--
+            post_set.all
+            カテゴリーに属するPOSTを全て取得
+            -->
+            {% for post in category.post_set.all|slice:":2" %}
+              <p><a href="{% url 'myapp:post_detail' post.id %}" class='text-black'>{{ post.title }}</a></p>
+            {% endfor %}
+            <p><a href="{% url 'myapp:category_detail' category.name_en %}">{{ category.name }}全記事一覧</a></p>
+          </div>
+        </div>
+
+      </div>
+    {% endfor %}
 </div>
 
 {% endblock %}
