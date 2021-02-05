@@ -7,6 +7,12 @@ class Category(models.Model):
   name_en = models.CharField("カテゴリ名英語", max_length=10)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+
+  # カテゴリーに属する記事を数える
+  def post_count(self):
+    n = Post.objects.filter(category=self).count()
+    return n
+
   def __str__(self):
   # Postを参照するとき、タイトルを指定して参照できる
     return self.name

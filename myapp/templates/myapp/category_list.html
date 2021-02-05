@@ -4,12 +4,12 @@
   <div class='col-md-9'>
     <h2 class='p-3'>カテゴリ一覧</h2>
   </div>
-  <div class='row mt-2'>
+  <div class='row'>
     {% for category in category_list %}
-      <div class='col-md-4'>
+      <div class='col-md-4 mt-3'>
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">{{ category.name }}</h4>
+            <p class="card-title">{{ category.name }}&nbsp;<small>({{ category.post_count}})</small></p>
             <hr>
             <!--
             post_set.all
