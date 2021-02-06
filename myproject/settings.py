@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 
 
@@ -138,3 +139,5 @@ LOGIN_REDIRECT_URL = 'myapp:index'
 # 画像やローカルファイルの保存先を指定
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+django_heroku.settings(locals())
