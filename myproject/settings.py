@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+import dj_database_url
 
 
 
@@ -23,8 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ek)n0lhh4cx33@29v()&z*$(t=4ww41vi#crtb^c5plnnhytun'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -57,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -87,11 +87,14 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'name',
+        'USER': 'user',
+        'PASSWORD': '',
+        'HOST': 'host',
+        'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -140,4 +143,22 @@ LOGIN_REDIRECT_URL = 'myapp:index'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-django_heroku.settings(locals())
+if not DEBUG:
+    SECRET_KEY = os.environ['SECRET_KEY']
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
+
+# Activate Django-Heroku.
+if not DEBUG:
+    SECRET_KEY = os.environ['SECRET_KEY']
+    django_heroku.settings(locals()) #追加
+
+# css
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
